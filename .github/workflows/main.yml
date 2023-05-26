@@ -28,7 +28,6 @@ jobs:
               - 'module_a/package_module_a/tests/*.py'
 
       - name: Install base dev deps and build for module_a
-        if: ${{ steps.filter.outputs.module_a == 'true' }}
         run: |
           cd module_a
           python -m pip install --upgrade pip
@@ -36,8 +35,8 @@ jobs:
           pip install -r requirements.txt
 
       - name: pylint with pylama for module_a
-        if: ${{ steps.filter.outputs.module_a == 'true' }}
         run: |
+          cd module_a
           pytest --pylama -v
 
       - name: Install base dev deps and build for module_b
@@ -49,4 +48,5 @@ jobs:
 
       - name: pylint with pylama for module_b
         run: |
+          cd module_b
           pytest --pylama -v
