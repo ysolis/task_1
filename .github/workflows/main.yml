@@ -33,6 +33,7 @@ jobs:
             module_c:
               - 'module_c/*.py'
               - 'module_c/package_module_c/*.py'
+              - 'module_c/package_module_c/tests/*.py'
 
       - name: upgrade pip and install install pip-tools to manage dependencies per package
         run: |
