@@ -30,6 +30,9 @@ jobs:
               - 'module_b/*.py'
               - 'module_b/package_module_b/*.py'
               - 'module_b/package_module_b/tests/*.py'
+            module_c:
+              - 'module_c/*.py'
+              - 'module_c/package_module_c/*.py'
 
       - name: Install base dev deps and build for module_a
         if: ${{ steps.filter.outputs.module_a == 'true' }}
@@ -59,6 +62,27 @@ jobs:
 
       - name: pylint with pylama for module_b
         if: ${{ steps.filter.outputs.module_b == 'true' }}
+        run: |
+          cd module_b
+          pytest --pylama -v
+
+      - name: pylint with pylama for module_a
+        if: ${{ steps.filter.outputs.module_a == 'true' }}
+        run: |
+          cd module_a
+          pytest --pylama -v
+
+      - name: Install base dev deps and build for module_c
+        if: ${{ steps.filter.outputs.module_c == 'true' }}
+        run: |
+          cd module_b
+          pip-compile -r --allow-unsafe --no-header --annotation-style line -U requirements.in
+          pip-sync requirements.txt
+          pip install build
+          pip install -e .
+
+      - name: pylint with pylama for module_c
+        if: ${{ steps.filter.outputs.module_c == 'true' }}
         run: |
           cd module_b
           pytest --pylama -v
