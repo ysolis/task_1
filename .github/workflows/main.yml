@@ -36,7 +36,7 @@ jobs:
 
       - name: upgrade pip and install install pip-tools to manage dependencies per package
         run: |
-          python -m pip install upgrade pip
+          python -m pip install --upgrade pip
           pip install pip-tools
 
       - name: Install base dev deps and build for module_a
