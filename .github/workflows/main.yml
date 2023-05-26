@@ -26,10 +26,17 @@ jobs:
               - 'module_a/*.py'
               - 'module_a/package_module_a/*.py'
               - 'module_a/package_module_a/tests/*.py'
+            module_b:
+              - 'module_b/*.py'
+              - 'module_b/package_module_b/*.py'
+              - 'module_b/package_module_b/tests/*.py'
 
       - name: Install base dev deps and build for module_a
         run: |
           cd module_a
+          python -m venv .
+          source ./bin/activate
+          echo "VIRTUAL_ENV: $VIRTUAL_ENV"
           python -m pip install --upgrade pip
           pip install build
           pip install -r requirements.txt
@@ -37,11 +44,15 @@ jobs:
       - name: pylint with pylama for module_a
         run: |
           cd module_a
+          source ./bin/activate
           pytest --pylama -v
 
       - name: Install base dev deps and build for module_b
         run: |
           cd module_b
+          python -m venv .
+          source ./bin/activate
+          echo "VIRTUAL_ENV: $VIRTUAL_ENV"
           python -m pip install --upgrade pip
           pip install build
           pip install -r requirements.txt
@@ -49,4 +60,5 @@ jobs:
       - name: pylint with pylama for module_b
         run: |
           cd module_b
+          source ./bin/activate
           pytest --pylama -v
