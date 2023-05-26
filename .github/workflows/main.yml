@@ -12,16 +12,29 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
+
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            module_a:
+              - 'module_a/*.py'
+              - 'module_a/package_module_a/*.py'
+              - 'module_a/package_module_a/tests/*.py'
+
       - name: Install base dev deps and build
+        if: ${{ steps.filter.outputs.module_a == 'true' }}
         run: |
           cd module_a
           python -m pip install --upgrade pip
           pip install build
           pip install -r requirements.txt
       - name: pylint with pylama
+        if: ${{ steps.filter.outputs.module_a == 'true' }}
         run: |
           pytest --pylama -v
