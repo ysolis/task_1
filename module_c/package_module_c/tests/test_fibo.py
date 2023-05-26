@@ -20,5 +20,6 @@ def test_fibo_ten():
 def test_fibo_twenty():
     assert fibo(20) == 10946
 
+
 def test_fibo_thirty():
     assert fibo(30) == 1346269
